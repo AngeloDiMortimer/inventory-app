@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+const { dbConnection } = require('./database');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -37,5 +39,14 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const databaseConection = async () => {
+  await dbConnection();
+}
+
+app.listen(() => {
+  databaseConection();
+  console.log("Server connected to database")
+})
 
 module.exports = app;
